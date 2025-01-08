@@ -1,3 +1,4 @@
+
 import numpy as np
 import pandas as pd
 from collections import Counter
@@ -108,7 +109,7 @@ class DecisionTree:
         return self._traverse_tree(x, node.right)
 
 
-class RandomForest_scratch:
+class RandomForest:
     def __init__(self, n_trees=10, max_depth=10, min_samples_split=2, n_feature=None):
         self.n_trees = n_trees
         self.max_depth = max_depth
@@ -142,10 +143,16 @@ class RandomForest_scratch:
         return most_common
 
     def predict(self, X):
-        if isinstance(X, pd.DataFrame):  # Check if X is a DataFrame
-            X = X.values  # Convert DataFrame to numpy array
+        if isinstance(X, pd.DataFrame):
+            X = X.values
 
         predictions = np.array([tree.predict(X) for tree in self.trees])
         tree_preds = np.swapaxes(predictions, 0, 1)
         predictions = np.array([self._most_common_label(pred) for pred in tree_preds])
         return predictions
+
+    def accuracy(y_true, y_pred):
+        accuracy = np.sum(y_true == y_pred) / len(y_true)
+        return accuracy
+    
+    
